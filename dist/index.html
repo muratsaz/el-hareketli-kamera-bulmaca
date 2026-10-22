@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eeede7">
+  <meta name="description" content="Ellerinle bir kare yakala. Fotoğrafını dokuz parçalı bir bulmacaya dönüştür, parçaları birleştir.">
+  <title>Kare — Ellerinde bir bulmaca</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section class="studio" aria-label="Kamera ve bulmaca stüdyosu">
+      <div class="scene" id="scene">
+        <div class="ambient" aria-hidden="true"><div class="ambient-disc"></div><div class="ambient-grid"></div></div>
+        <video id="camera" playsinline muted autoplay aria-label="Aynalanmış canlı kamera görüntüsü"></video>
+        <div class="scene-shade"></div>
+        <header class="studio-header">
+          <a class="wordmark" href="./" aria-label="Kare ana sayfa"><span class="logo-mark">▦</span> kare<span class="wordmark-dot">.</span></a>
+          <div class="live-status"><span id="liveDot" class="status-dot"></span><span id="liveLabel">KAMERA KAPALI</span></div>
+          <button id="helpButton" class="icon-button" aria-label="Nasıl oynanır?" title="Nasıl oynanır?">?</button>
+        </header>
+        <div class="scene-caption"><span>GÖR. YAKALA. BİRLEŞTİR.</span><span>ETKİLEŞİMLİ KAMERA DENEYİMİ / 01</span></div>
+        <div class="welcome" id="welcome">
+          <div class="eyebrow"><span></span> KÜÇÜK BİR EL HAREKETİYLE</div>
+          <h1>Bir kare.<br>Dokuz parça.<br><em>Senin ellerinde.</em></h1>
+          <p>Kendini kadraja al, anı yakala.<br>Parçaları ellerinle yeniden birleştir.</p>
+          <button id="startCamera" class="button primary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 6 8H3v11h18V8h-3l-2-3H8Z"/><circle cx="12" cy="13" r="3.5"/></svg>Kamerayı aç <span>↗</span></button>
+          <button id="tryDemo" class="text-button">Önce örnekle dene <span>→</span></button>
+        </div>
+        <div class="capture-guide" id="captureGuide" hidden><i></i><i></i><i></i><i></i><div class="guide-label" id="guideLabel">İKİ ELİNLE BİR ÇERÇEVE YAP</div><div class="capture-progress"><span id="captureProgress"></span></div></div>
+        <div class="board-wrap" id="boardWrap" hidden><div class="board" id="board" role="group" aria-label="3 çarpı 3 fotoğraf bulmacası"></div><div class="board-label"><span id="boardLabel">KAREYİ YENİDEN BİRLEŞTİR</span><span>3 × 3</span></div></div>
+        <canvas id="handOverlay" aria-hidden="true"></canvas>
+        <div class="hand-cursor" id="handCursor" hidden><span></span></div>
+        <div class="success" id="success" hidden role="status"><span class="success-icon">✓</span><div><span class="eyebrow">TÜM PARÇALAR YERİNDE</span><h2>Kare tamamlandı.</h2><p id="successDetail"></p></div><button id="playAgain" class="button primary">Bir daha oyna ↻</button></div>
+        <div class="camera-error" id="cameraError" hidden role="alert"><strong>Kameraya bağlanamadık.</strong><p id="cameraErrorText"></p><button id="retryCamera" class="text-button">Yeniden dene ↗</button></div>
+        <div class="bottom-hint" id="bottomHint"><span class="hint-symbol">⌁</span><span id="hintText">Kamera görüntün yalnızca bu tarayıcıda işlenir.</span></div>
+        <div class="flash" id="flash" aria-hidden="true"></div>
+      </div>
+      <footer class="studio-footer"><span><span class="tiny-cross">＋</span> BİRAZ OYUN, BİRAZ SİHİR.</span><span id="inputMode">EL HAREKETİ · FARE · DOKUNMA</span></footer>
+    </section>
+    <aside class="sidebar" aria-label="Bulmaca kontrolleri">
+      <div class="sidebar-top"><span class="eyebrow">KİŞİSEL OYUN ALANIN</span><span class="edition">NO. 001</span></div>
+      <div class="section-title"><h2>Senin karen</h2><span id="photoCount">00 / 01</span></div>
+      <div class="photo-card" id="photoCard"><div class="photo-empty" id="photoEmpty"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M23 15H14v9m27-9h9v9M14 40v9h9m27-9v9h-9"/><circle cx="32" cy="31" r="7"/><path d="m22 44 7-6 6 4 5-3 5 5"/></svg><span>Her şey bir kareyle başlar.</span></div><img id="referenceImage" alt="Bulmacanın tamamlanmış hedef fotoğrafı" hidden><div class="photo-caption"><span id="photoName">HENÜZ BİR KARE YOK</span><span>↗</span></div></div>
+      <div class="stats"><div><span class="stat-label">HAMLE</span><strong id="moveCount">00</strong></div><div><span class="stat-label">SÜRE</span><strong id="timer">00:00</strong></div><div><span class="stat-label">YERİNDE</span><strong><span id="correctCount">0</span><small> / 9</small></strong></div></div>
+      <div class="divider"></div>
+      <div class="control-heading"><span class="eyebrow">KONTROL SENDE</span><span class="small-square">▧</span></div>
+      <button class="control-button" id="captureButton" disabled><span class="control-icon">⌑</span><span>Yeni kare yakala</span><kbd>BOŞLUK</kbd></button>
+      <button class="control-button" id="shuffleButton" disabled><span class="control-icon">⤨</span><span>Parçaları karıştır</span><span>↗</span></button>
+      <button class="control-button" id="uploadButton"><span class="control-icon">↥</span><span>Fotoğraf yükle</span><span>↗</span></button>
+      <input type="file" id="photoInput" accept="image/*" hidden>
+      <div class="toggle-row"><span>El takibi <small id="trackingLabel">Kamera açılınca hazır</small></span><button id="trackingToggle" class="toggle" role="switch" aria-checked="false" aria-label="El takibi" disabled><span></span></button></div>
+      <button id="stopCamera" class="text-button stop-button" hidden>Kamerayı kapat <span>×</span></button>
+      <div class="mini-guide"><span class="eyebrow">NASIL OYNANIR?</span><div><span class="step-number">01</span><p>İki elinle bir çerçeve oluştur.<br><strong>Bir an sabit tut, kareyi yakala.</strong></p></div><div><span class="step-number">02</span><p>Baş ve işaret parmağını birleştir.<br><strong>Bir parçayı tut, diğerinin üstüne bırak.</strong></p></div><div><span class="step-number">03</span><p>Dokuz parçayı yerine getir.<br><strong>Fotoğrafın yeniden tamamlansın.</strong></p></div></div>
+      <div class="privacy"><span class="privacy-dot"></span> Fotoğrafların cihazında kalır.</div>
+      <div class="sidebar-bottom"><span>KARE / CAMERA PLAYGROUND</span><span>2026</span></div>
+    </aside>
+  </main>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <dialog id="helpDialog"><button id="closeHelp" class="dialog-close" aria-label="Kapat">×</button><span class="eyebrow">ELLERİN OYUN KUMANDAN</span><h2>Bir kare yakalayalım.</h2><p><b>1.</b> Kamerayı aç ve kamera iznini ver. İki elinin baş ve işaret parmaklarını açıp bir dikdörtgen oluştur; bir saniye sabit tut. İstersen <b>Yeni kare yakala</b> düğmesine bas.</p><p><b>2.</b> Bulmacadaki parçanın üstünde baş ve işaret parmaklarını birleştir. Elini taşı, başka bir parçanın üstünde parmaklarını aç. İki parça yer değiştirir.</p><p><b>3.</b> Fareyle sürükleyebilir veya iki parçaya sırayla tıklayabilirsin. Telefonda iki parçaya dokun. Klavyede yön tuşlarıyla gezin, Enter ile seç.</p><p class="help-note">Ellerini iyi aydınlat, kameradan yaklaşık bir kol boyu uzakta tut. Kamera kullanmadan fotoğraf yükleyebilir veya örnekle oynayabilirsin.</p><button id="helpDone" class="button primary">Anladım, oynayalım ↗</button></dialog>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
